@@ -1,76 +1,46 @@
 <template>
-  <!-- <swiper
-    :spaceBetween="30"
-    :centeredSlides="true"
-    :autoplay="{
-      delay: 2500,
-      disableOnInteraction: false,
-    }"
-    :effect="'cube'"
-    :cubeEffect="{
-      shadow: true,
-      slideShadows: true,
-      shadowOffset: 20,
-      shadowScale: 0.94,
-    }"
-    :pagination="{
-      clickable: true,
-    }"
-    :navigation="true"
-    :modules="modules"
-    :loop="true"
-    class="mySwiper"
-  >
-    <swiper-slide
-      ><img
-        src="https://swiperjs.com/demos/images/nature-1.jpg" /></swiper-slide
-    ><swiper-slide
-      ><img
-        src="https://swiperjs.com/demos/images/nature-2.jpg" /></swiper-slide
-    ><swiper-slide
-      ><img
-        src="https://swiperjs.com/demos/images/nature-3.jpg" /></swiper-slide
-    ><swiper-slide
-      ><img src="https://swiperjs.com/demos/images/nature-4.jpg"
-    /></swiper-slide>
-  </swiper> -->
-  <!-- <span @click="setFullsreen">全屏</span> -->
-  <div>
-    <span>{{ currentTime.hours }}: {{ currentTime.min }}</span>
-    <span>2022年04月26日</span>
+  <div class="album-page">
+    <album-show></album-show>
+    <date-show :section="section"></date-show>
+    <span
+      v-if="!isFullScreen"
+      class="album-fullscreen-btn"
+      @click="setFullScreen"
+    >
+      <full-screen></full-screen>
+    </span>
   </div>
 </template>
+
 <script setup lang="ts">
-// Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from "swiper/vue";
+import { ref } from "vue";
+import AlbumShow from "./components/AlbumShow.vue";
+import DateShow from "./components/DateShow.vue";
+import FullScreen from "./components/icons/FullScreen.vue";
+import { fullSreen } from "./utils";
 
-// Import Swiper styles
-import "swiper/css";
+const section = ref(`别人说你不行，是因为他自己做不到。
+  你要尽全力保护你的梦想，那些嘲笑你的人，他们必定会失败，他们想把你变成和他们一样的人。
+  如果你有梦想的话，就要努力去实现，就这样。`);
+const isFullScreen = ref(false);
 
-import "swiper/css/effect-cube";
-
-import "./style.css";
-import { reactive, ref } from "vue";
-
-// import required modules
-// import { Autoplay, EffectCube } from "swiper";
-
-// const modules = [Autoplay, EffectCube];
-// function setFullsreen() {
-//   if (document.documentElement.requestFullscreen) { // W3C API
-// 		document.documentElement.requestFullscreen();
-// 	} else if (document.documentElement.mozRequestFullScreen) { // Mozilla current API
-// 		document.documentElement.mozRequestFullScreen();
-// 	} else if (document.documentElement.webkitRequestFullScreen) { // Webkit current API
-// 		document.documentElement.webkitRequestFullScreen();
-// 	}
-// }
-const currentTime = reactive({
-  hours: new Date().getHours(),
-  min: new Date().getMinutes(),
-});
-setInterval(() => {
-  currentTime.hours = new Date().getHours();
-  currentTime.min = new Date().getMinutes();
-}, 1000);
+const setFullScreen = () => {
+  fullSreen();
+  isFullScreen.value = true;
+};
 </script>
+
+<style lang="less" scoped>
+.album-page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .album-fullscreen-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1;
+  }
+}
+</style>
